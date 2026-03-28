@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katarina & Vukašin</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* ✅ BODY bez pozadine (pozadina ide u fiksni layer) */
+      body {
+        font-family: "Montserrat", sans-serif;
+        color: #333;
+        text-align: center;
+        overflow-x: hidden;
+        margin: 0;
+      }
+
+      /* ✅ ZAKUCANA POZADINA */
+      .bg-fixed {
+        position: fixed;
+        inset: 0;
+        background: url("golubovi.jpg") no-repeat center center;
+        background-size: cover;
+        z-index: -2;
+      }
+
+      /* ✅ Blagi bijeli veo radi čitljivosti (možeš pojačati/smanjiti) */
+      .bg-overlay {
+        position: fixed;
+        inset: 0;
+        /* background:rgba(255,255,255,0.55); */
+        /* z-index:-1; */
+      }
+
+      /* OVERLAY (sadržaj) */
+      .overlay {
+        min-height: 100vh;
+        padding: 27vh 2vh;
+      }
+
+      /* LOGO */
+      .logo-container img {
+        width: 44vw;
+        max-width: 500px;
+        height: auto;
+        opacity: 0;
+        transform: scale(0.95);
+        animation: logoFade 1.8s ease forwards;
+        animation-delay: 0.3s;
+        margin-top: 4vh;
+      }
+
+      /* TITLE */
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 52px;
+        letter-spacing: 4px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: titleFade 1.5s ease forwards;
+        animation-delay: 0.8s;
+      }
+
+      .amp {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        margin: 0 8px;
+      }
+
+      /* DATE BLOCK - CALENDAR */
+      .date-block {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1vh;
+        opacity: 0;
+        animation: fadeUp 1.5s ease forwards;
+        animation-delay: 1.3s;
+        perspective: 1200px;
+      }
+
+      .calendar-container {
+        position: relative;
+        width: 300px;
+        height: 340px;
+        perspective: 1200px;
+        transform-style: preserve-3d;
+      }
+
+      .date-text {
+        margin-top: 20vh;
+        font-size: 18px;
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1.5s ease forwards;
+        animation-delay: 1.6s;
+      }
+
+      /* COUNTDOWN */
+      .countdown {
+        font-size: 30px;
+        margin-top: 40px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1.5s ease forwards;
+        animation-delay: 1.9s;
+      }
+
+      /* INVITE TEXT */
+      .invite-text {
+        font-size: 18px;
+        line-height: 1.9;
+        margin-top: 40px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1.5s ease forwards;
+        animation-delay: 2.2s;
+      }
+
+      /* GOOGLE MAPS SECTION */
+      .map-section {
+        margin-top: 9vh;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 1.5s ease forwards;
+        animation-delay: 2.5s;
+      }
+
+      .map-section h2 {
+        margin-bottom: 30px;
+        font-family: "Montserrat", serif;
+        font-weight: 50;
+      }
+
+      .map-section iframe {
+        width: 100%;
+        max-width: 700px;
+        height: 350px;
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .map-wrapper {
+        position: relative;
+        display: block;
+        max-width: 700px;
+        margin: 0 auto;
+        text-decoration: none;
+      }
+
+      .map-wrapper iframe {
+        width: 100%;
+        height: 350px;
+        border: 0;
+        border-radius: 12px;
+        pointer-events: none; /* VAŽNO */
+      }
+
+      .map-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.35);
+        border-radius: 12px;
+        transition: 0.3s;
+      }
+
+      .map-overlay span {
+        background: #fff;
+        padding: 12px 28px;
+        letter-spacing: 2px;
+        font-size: 14px;
+        color: #000;
+        margin-top: 12vh;
+      }
+
+      .map-wrapper:hover .map-overlay {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      /* FOOTER */
+      footer {
+        margin-top: 120px;
+        font-size: 14px;
+        opacity: 0;
+        animation: fadeIn 2s ease forwards;
+        animation-delay: 2.8s;
+      }
+      .heart {
+        color: #b11226; /* duboka romantična crvena */
+        font-size: 1.3em;
+        display: inline-block;
+        animation: pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      .map-link {
+        display: block;
+        text-decoration: none;
+      }
+      /* IMPORT elegant font */
+      @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap");
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* ANIMATIONS */
+      @keyframes logoFade {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes titleFade {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        to {
+          opacity: 0.8;
+        }
+      }
+
+      /* MOBILE */
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 4vh;
+          margin-top: 5vh;
+        }
+        .countdown {
+          font-size: 22px;
+        }
+      }
+
+      /* ===== NEW CALENDAR (CLEAN + LUXURY) ===== */
+
+      .calendar-stack {
+        position: relative;
+        width: 53vw;
+        height: 22vh;
+        margin: 40px auto;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+      }
+
+      /* PAGE */
+      .calendar-page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #fbfbf9 0%, #ffffff 100%);
+        border-radius: 20px;
+
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.12),
+          0 5px 15px rgba(0, 0, 0, 0.08),
+          inset 0 0 20px rgba(255, 255, 255, 0.8);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        transform-origin: top center;
+        backface-visibility: hidden;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* subtle paper effect */
+      .calendar-page::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.6) 0%,
+            rgba(0, 0, 0, 0.02) 100%
+          ),
+          radial-gradient(
+            ellipse at 50% 0%,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        border-radius: 20px;
+      }
+
+      /* Paper texture */
+      .calendar-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.02"/></svg>');
+        opacity: 0.3;
+        pointer-events: none;
+        border-radius: 20px;
+      }
+
+      /* HEADER */
+      .page-header {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        padding: 12px 10px;
+        background: linear-gradient(
+          135deg,
+          #c49563 0%,
+          #d4a574 50%,
+          #deb896 100%
+        );
+        border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+        color: #ffffff;
+        text-align: center;
+        font-family: "Playfair Display", serif;
+        letter-spacing: 1px;
+        font-size: 30px;
+        font-weight: 400;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow:
+          0 4px 12px rgba(212, 165, 116, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      /* DAY */
+      .page-day {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 60px;
+        color: #1a1a1a;
+        font-weight: 400;
+        letter-spacing: -2px;
+        text-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.08),
+          0 1px 2px rgba(212, 165, 116, 0.15);
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        margin-top: 5vh;
+        text-align: center;
+      }
+
+      /* STACK DEPTH */
+      .calendar-page:nth-child(1) {
+        transform: translateY(0) translateZ(0px);
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.12),
+          0 5px 15px rgba(0, 0, 0, 0.08),
+          inset 0 0 20px rgba(255, 255, 255, 0.8);
+      }
+      .calendar-page:nth-child(2) {
+        transform: translateY(6px) translateZ(-8px);
+        box-shadow:
+          0 12px 28px rgba(0, 0, 0, 0.15),
+          0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+      .calendar-page:nth-child(3) {
+        transform: translateY(12px) translateZ(-16px);
+        box-shadow:
+          0 10px 24px rgba(0, 0, 0, 0.18),
+          0 3px 10px rgba(0, 0, 0, 0.15);
+      }
+      .calendar-page:nth-child(4) {
+        transform: translateY(18px) translateZ(-24px);
+        box-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.2),
+          0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      /* SMOOTHER + ELEGANT FLIP */
+      .flip {
+        animation: realisticFlip 0.08s ease-in-out forwards;
+      }
+
+      @keyframes realisticFlip {
+        0% {
+          opacity: 1;
+          transform: rotateX(0deg) translateY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: rotateX(80deg) translateY(-8px);
+        }
+        85% {
+          opacity: 0.5;
+          transform: rotateX(160deg) translateY(-25px);
+        }
+        100% {
+          opacity: 0;
+          transform: rotateX(180deg) translateY(-35px);
+        }
+      }
+
+      /* TARGET DATE REACHED */
+      .celebrate {
+        animation: celebrate 0.8s ease-out forwards;
+      }
+
+      @keyframes celebrate {
+        0% {
+          transform: scale(1) rotateY(0deg);
+        }
+        50% {
+          transform: scale(1.05) rotateY(5deg);
+        }
+        100% {
+          transform: scale(1) rotateY(0deg);
+        }
+      }
+
+      /* FINAL ELEGANT GLOW */
+      .final {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, #fdfcfb 0%, #ffffff 100%);
+      }
+      .countdown{
+  font-size:30px;
+  margin-top:40px;
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeUp 1.5s ease forwards;
+  animation-delay:1.9s;
+}
+
+    </style>
+  </head>
+
+  <body>
+    <!-- ✅ FIKSNA POZADINA -->
+    <div class="bg-fixed"></div>
+    <div class="bg-overlay"></div>
+
+    <div class="overlay">
+      <p
+        style="
+          opacity: 0;
+          animation: fadeIn 2s ease forwards;
+          animation-delay: 0.5s;
+          margin-top: 2vh;
+        "
+      >
+        Pozivamo Vas da svojim prisustvom uveličate naš poseban dan
+      </p>
+
+      <h1>Katarina <span class="amp">&</span> Vukašin</h1>
+
+      <div class="date-block">
+        <div class="calendar-stack" id="calendar-stack"></div>
+      </div>
+      <div class="date-text">
+        Doček gostiju 16:00h - 16:45h<br />
+        Imanje Knjaz, Podgorica
+      </div>
+
+      <div class="countdown" id="countdown"></div>
+
+      <div class="invite-text">
+        <p>Molimo Vas da dolazak potvrdite do 10. maja 2026. godine.</p>
+
+        <p style="margin-top: 40px">
+          S poštovanjem,<br />
+          porodice Rajković i Bojković
+        </p>
+      </div>
+
+      <div class="map-section">
+        <h2>Lokacija događaja</h2>
+
+        <a
+          href="https://www.google.com/maps/dir/?api=1&destination=Imanje+Knjaz+Podgorica"
+          target="_blank"
+          class="map-wrapper"
+        >
+          <iframe
+            src="https://www.google.com/maps?q=Imanje%20Knjaz%20Podgorica&output=embed"
+            loading="lazy"
+          >
+          </iframe>
+
+          <div class="map-overlay">
+            <span>Putanja</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ✅ Footer na kraj -->
+      <footer>
+        S ljubavlju <span class="heart">🤍</span> Katarina & Vukašin
+      </footer>
+    </div>
+    <script>
+      const stack = document.getElementById("calendar-stack");
+
+      const months = [
+        "JANUAR",
+        "FEBRUAR",
+        "MART",
+        "APRIL",
+        "MAJ",
+        "JUN",
+        "JUL",
+        "AVGUST",
+        "SEPTEMBAR",
+        "OKTOBAR",
+        "NOVEMBAR",
+        "DECEMBAR",
+      ];
+
+      let currentDate = new Date();
+      const targetDate = new Date(2026, 5, 2); // May 2, 2026
+      targetDate.setHours(23, 59, 59, 999); // End of day to ensure inclusion
+
+      // Create specific dates for the countdown
+      const displayDates = [];
+      let d = new Date(currentDate);
+
+      while (d <= targetDate) {
+        displayDates.push(new Date(d));
+        d.setDate(d.getDate() + 1);
+      }
+
+      let dateIndex = 0;
+
+      // CREATE PAGE
+      function createPage(date) {
+        const page = document.createElement("div");
+        page.className = "calendar-page";
+
+        page.innerHTML = `
+    <div class="page-header">
+      ${months[date.getMonth()]} ${date.getFullYear()}
+    </div>
+    <div class="page-day">
+      ${String(date.getDate()).padStart(2, "0")}
+    </div>
+  `;
+        return page;
+      }
+
+      // INIT STACK
+      function initStack() {
+        stack.innerHTML = "";
+
+        for (let i = 0; i < 4 && i < displayDates.length; i++) {
+          const page = createPage(displayDates[i]);
+          page.style.zIndex = 10 - i;
+          stack.appendChild(page);
+        }
+      }
+
+      // FLIP (SYNCED + SMOOTH)
+      function flipPage() {
+        if (dateIndex >= displayDates.length - 1) {
+          // Target date reached - show celebration
+          const finalPage = stack.children[0];
+          if (finalPage) {
+            finalPage.classList.add("celebrate");
+          }
+          return false;
+        }
+
+        if (!stack || stack.children.length === 0) return false;
+
+        const topPage = stack.children[0];
+        if (!topPage) return false;
+
+        topPage.classList.add("flip");
+
+        setTimeout(() => {
+          try {
+            if (topPage && topPage.parentNode === stack) {
+              topPage.remove();
+            }
+
+            // Add next page AFTER removing the current one
+            dateIndex++;
+            if (dateIndex + 3 < displayDates.length) {
+              const newPage = createPage(displayDates[dateIndex + 3]);
+              newPage.style.zIndex = (10 - 3).toString();
+              stack.appendChild(newPage);
+            }
+
+            [...stack.children].forEach((p, i) => {
+              p.style.zIndex = (10 - i).toString();
+            });
+          } catch (e) {
+            console.error("Flip error:", e);
+          }
+        }, 75); // Match animation duration
+
+        return true;
+      }
+
+      // START (SMOOTH CASCADING FLIPS)
+      window.addEventListener("load", () => {
+        initStack();
+        setTimeout(run, 100);
+      });
+
+      function run() {
+        if (flipPage()) {
+          setTimeout(run, 80); // Sync with animation duration
+        }
+      }
+    </script>
+    <script>
+      /* COUNTDOWN */
+      const weddingDate = new Date("June 2, 2026 16:00:00").getTime();
+      const countdown = document.getElementById("countdown");
+
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (distance > 0) {
+          countdown.innerHTML = `${days} dana ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+          countdown.innerHTML = "Danas je naš dan 🤍";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
